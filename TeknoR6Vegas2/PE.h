@@ -2,6 +2,10 @@
 #include <WinNT.h>
 #define MAX_SECTION_NUM 20
 
+#ifndef PEF_DEF
+#define PEF_DEF
+
+
 typedef struct _PEStruct
 {
       DWORD                   dwRO_first_section;
@@ -16,3 +20,5 @@ typedef struct _PEStruct
 } PEStruct, *PPEStruct;
 
 PEStruct getPEFileInformation(char *filename);
+
+#endif // !1

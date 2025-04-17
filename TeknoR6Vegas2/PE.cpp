@@ -17,8 +17,11 @@ PEStruct getPEFileInformation(char *filename)
 	pRetnStruct.fileImage = malloc(pRetnStruct.fileSize);
 	if(!pRetnStruct.fileImage)
 		return pRetnStruct;
-	ReadFile(hFile,pRetnStruct.fileImage,pRetnStruct.fileSize,&dwBytesRead,NULL);
-	CloseHandle(hFile);
+	if (ReadFile(hFile, pRetnStruct.fileImage, pRetnStruct.fileSize, &dwBytesRead, NULL))
+		CloseHandle(hFile);
+	else
+		return pRetnStruct;
+
 	if(!dwBytesRead)
 		return pRetnStruct;
 	//copy portions to relevant sections
@@ -32,7 +35,7 @@ PEStruct getPEFileInformation(char *filename)
 	CopyMemory(&pRetnStruct.image_section_header,((BYTE *)pRetnStruct.fileImage + pRetnStruct.dwRO_first_section),
 		pRetnStruct.numOfSecs*sizeof(IMAGE_SECTION_HEADER));
 	//now to fill in individual sections (.text .data)
-	for(int i=0;i < pRetnStruct.numOfSecs;i++)
+	for(unsigned int i=0;i < pRetnStruct.numOfSecs;i++)
 	{
 		pRetnStruct.image_section[i] =(char *) malloc(PEAlign(pRetnStruct.image_section_header[i].SizeOfRawData,
 			pRetnStruct.image_nt_headers.OptionalHeader.FileAlignment));

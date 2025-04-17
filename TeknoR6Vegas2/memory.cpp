@@ -30,7 +30,7 @@ bool InitiateMemory(HANDLE hProcess,DWORD startAddress,DWORD endAddress)
 }
 DWORD byteScan(char *bytes, int len)
 {
-	for(int i = 0; i < bufSize; i++)
+	for(unsigned int i = 0; i < bufSize; i++)
 	{
 		if(*(BYTE *)(bufferPtr + i) == *(BYTE *)bytes)
 		{
