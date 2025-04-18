@@ -200,10 +200,10 @@ void ModManager::SetTimeLimit(int val) {
 }
 void ModManager::SetSpawnRate(System::Object^ val) {
 	if (val != "Default") {
-		m_iSpawnRate = 8;
+		m_iSpawnRate = System::Convert::ToInt32(val);
 	}
 	else {
-		m_iSpawnRate = System::Convert::ToInt32(val);
+		m_iSpawnRate = 8;
 	}
 		std::string spawn = std::to_string(m_iSpawnRate);
 
