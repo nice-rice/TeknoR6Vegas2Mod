@@ -91,6 +91,9 @@ namespace TeknoR6Vegas2 {
 		private: System::Windows::Forms::Label^ TimeLimitLabel;
 	private: System::Windows::Forms::Button^ ApplyButton;
 	private: System::Windows::Forms::ComboBox^ MaxPlayersDrop;
+	private: System::Windows::Forms::CheckBox^ ReadyUpCheck;
+
+
 
 
 
@@ -136,6 +139,7 @@ void InitializeComponent(void){
 	this->SpawnRateDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->SelectMapLabel = (gcnew System::Windows::Forms::Label());
 	this->SpawnRateLabel = (gcnew System::Windows::Forms::Label());
+	this->ReadyUpCheck = (gcnew System::Windows::Forms::CheckBox());
 	(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TitlePictureBox))->BeginInit();
 	this->HostOptions->SuspendLayout();
 	this->LaunchBoxGroup->SuspendLayout();
@@ -339,6 +343,7 @@ void InitializeComponent(void){
 	// 
 	// OtherOptionsGroup
 	// 
+	this->OtherOptionsGroup->Controls->Add(this->ReadyUpCheck);
 	this->OtherOptionsGroup->Controls->Add(this->TimeLimitDrop);
 	this->OtherOptionsGroup->Controls->Add(this->TimeLimitLabel);
 	this->OtherOptionsGroup->Location = System::Drawing::Point(63, 377);
@@ -450,6 +455,16 @@ void InitializeComponent(void){
 	this->SpawnRateLabel->TabIndex = 2;
 	this->SpawnRateLabel->Text = L"Spawn Rate";
 	// 
+	// ReadyUpCheck
+	// 
+	this->ReadyUpCheck->AutoSize = true;
+	this->ReadyUpCheck->Location = System::Drawing::Point(10, 78);
+	this->ReadyUpCheck->Name = L"ReadyUpCheck";
+	this->ReadyUpCheck->Size = System::Drawing::Size(120, 17);
+	this->ReadyUpCheck->TabIndex = 23;
+	this->ReadyUpCheck->Text = L"Ready Up Required";
+	this->ReadyUpCheck->UseVisualStyleBackColor = true;
+	// 
 	// Form1
 	// 
 	this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -465,7 +480,7 @@ void InitializeComponent(void){
 	this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
 	this->MaximizeBox = false;
 	this->Name = L"Form1";
-	this->Text = L"Reaver\'s Rainbow Six Vegas 2 Toolkit v4.0 / www.TeknoGods.com";
+	this->Text = L"Reaver\'s RSV2 Toolkit (nice-rice v0.5)";
 	this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 	(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TitlePictureBox))->EndInit();
 	this->HostOptions->ResumeLayout(false);
@@ -558,12 +573,12 @@ void InitializeComponent(void){
 		m_pManager->SetDifficulty(DifficultyDrop->Text);
 		m_pManager->SetTimeLimit(Convert::ToInt32(TimeLimitDrop->SelectedItem));
 		m_pManager->SetMaxPlayers(Convert::ToInt32(MaxPlayersDrop->SelectedItem));
-
+		m_pManager->SetReadyUp(ReadyUpCheck->Checked);
 		m_pManager->SetSpawnRate(SpawnRateDrop->SelectedItem);
 		m_pManager->SetTerrorCount(TerrorCountDrop->SelectedItem);
 		
 	}
-	
+
 };
 }
 

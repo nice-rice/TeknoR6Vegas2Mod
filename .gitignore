@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/KellerGame
+/Engine
+/DirectX9c
+/Binaries
+/Debug
+/.vs
+/TeknoR6Vegas2/Debug

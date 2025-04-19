@@ -6,7 +6,7 @@ ModManager::ModManager() {
 	m_bStartProcess = false;
 	m_sCurrentMap = "Mb01_Import";
 
-	m_bIsHost = false;
+	m_bIsHost = true;
 	m_sServerName = "Default Server";
 	m_sServerPassword = "";
 
@@ -16,6 +16,7 @@ ModManager::ModManager() {
 	m_iTimeLimit = 0;
 	m_iDifficulty = 2;
 	m_iRespawnCount = 1;
+	m_iTimeBetween = 60;
 
 }
 
@@ -48,7 +49,9 @@ bool ModManager::LoadProcess(LPCSTR Filename){
 		m_sCurrentMap + "?AgO=0?AgU=" +
 		m_sServerName + "?AgP=?SrvOptionFile=R6VegasServerConfig?PW=" +
 		m_sServerPassword + "?GAME=R6Game.R6CoopTerroristHuntGame?GD=" +
-		std::to_string(m_iDifficulty) + "?BT=30?TBR=0?RD="+std::to_string(m_iTimeLimit)+"?";
+		std::to_string(m_iDifficulty) + "?BT=30?TBR="+
+		std::to_string(m_iTimeBetween)+"?RD="+
+		std::to_string(m_iTimeLimit)+"?";
 	char* cmdLineMutable = &commandLine[0];
 	
 	if (!CreateProcess(NULL, // No module name (use command line). 
@@ -125,7 +128,7 @@ void ModManager::ModifyMemory(){
 		// Player Cap
 		if (!m_bDefaultPlayers)
 		{
-			DWORD myval = System::Convert::ToInt32(m_iMaxPlayers);
+			DWORD myval = m_iMaxPlayers;
 
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D4DA72, "\x90\x90", 2, 0);
 			// Player count #1 here
@@ -205,15 +208,15 @@ void ModManager::SetSpawnRate(System::Object^ val) {
 	else {
 		m_iSpawnRate = 8;
 	}
-		std::string spawn = std::to_string(m_iSpawnRate);
+	std::string spawn = std::to_string(m_iSpawnRate);
 
-		LPCSTR filename = "../KellerGame/Config/PlatformSpecificConfigPC.ini";
-		LPCSTR key = "MaxTerrorist";
+	LPCSTR filename = "../KellerGame/Config/PlatformSpecificConfigPC.ini";
+	LPCSTR key = "MaxTerrorist";
 		
-		LPCSTR value = spawn.c_str();
-		BOOL ret = WritePrivateProfileStringA("Gameplay", key, value, filename);
-		key = "MaxTerroristTerroHunt";
-		ret = WritePrivateProfileStringA("Gameplay", key, value, filename);
+	LPCSTR value = spawn.c_str();
+	BOOL ret = WritePrivateProfileStringA("Gameplay", key, value, filename);
+	key = "MaxTerroristTerroHunt";
+	ret = WritePrivateProfileStringA("Gameplay", key, value, filename);
 	
 }
 void ModManager::SetTerrorCount(System::Object^ val) {
@@ -238,5 +241,20 @@ void ModManager::SetMaxPlayers(int val) {
 void ModManager::SetMap(int map) {
 	
 	m_sCurrentMap = g_aMapList[map];
+	std::string map_code = std::to_string((map + 1) + 200);
 
+	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
+	LPCSTR key = "m_iSelectedMaps[0]";
+
+	LPCSTR value = map_code.c_str();
+	BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", key, value, filename);
+
+
+}
+void ModManager::SetReadyUp(bool val) {
+	if (val) {
+		m_iTimeBetween = 0;
+	}
+	else
+		m_iTimeBetween = 60;
 }

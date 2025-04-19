@@ -31,6 +31,7 @@ public:
 	void SetTerrorCount(System::Object^ val);
 	void SetMaxPlayers(int val);
 	void SetMap(int map);
+	void SetReadyUp(bool val);
 	
 	const std::string g_aMapList[18] = {
 	"Mb01_Import",
@@ -73,5 +74,6 @@ private:
 	int m_iDifficulty;
 	int m_iRespawnCount;
 	std::string m_sCurrentMap;
+	int m_iTimeBetween;
 	//std::vector<std::string> m_vMapList;
 };
