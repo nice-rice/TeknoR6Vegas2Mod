@@ -179,6 +179,7 @@ void ModManager::ModifyMemory(){
 	//WriteLog("Process exited");
 
 }
+
 void ModManager::SetServer(bool s, System::String^ name, System::String^ pwd) {
 	m_bIsHost = s;
 	msclr::interop::marshal_context context;
@@ -200,6 +201,13 @@ void ModManager::SetDifficulty(System::String^ diff) {
 }
 void ModManager::SetTimeLimit(int val) {
 	m_iTimeLimit = val*60;
+	std::string time_limt = std::to_string(m_iTimeLimit);
+
+	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
+	LPCSTR key = "m_iRoundDuration";
+
+	LPCSTR value = time_limt.c_str();
+	BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", key, value, filename);
 }
 void ModManager::SetSpawnRate(System::Object^ val) {
 	if (val != "Default") {
