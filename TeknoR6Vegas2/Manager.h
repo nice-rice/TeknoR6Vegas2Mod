@@ -6,7 +6,7 @@
 #include <string>
 #include <cstring>
 
-
+#define NUM(a) (sizeof(a) / sizeof(*a))
 #define Roundby1000(a) (a / 0x1000 + ((a % 0x1000) > 0 ? 1 : 0)) * 0x1000
 
 
@@ -24,7 +24,7 @@ public:
 	void ModifyMemory();
 
 	void SetServer(bool s, System::String^ name, System::String^ pwd);
-	void SetRespawn(int val);
+	void SetRespawn(System::String^ val);
 	void SetDifficulty(System::String^ diff);
 	void SetTimeLimit(int val);
 	void SetSpawnRate(System::Object^ val);

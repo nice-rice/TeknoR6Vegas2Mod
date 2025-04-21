@@ -187,8 +187,25 @@ void ModManager::SetServer(bool s, System::String^ name, System::String^ pwd) {
 	m_sServerPassword = context.marshal_as<std::string>(pwd);
 
 }
-void ModManager::SetRespawn(int val) {
-	m_iRespawnCount = val;
+void ModManager::SetRespawn(System::String^ val) {
+	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
+	bool respawn_on = true;
+	if (val == "None") {
+		m_iRespawnCount = 1;
+		respawn_on = false;
+	}
+	else if (val == "Unlimited") {
+		m_iRespawnCount = 0;
+	}
+	else {
+		m_iRespawnCount = System::Convert::ToInt32(val)+1;
+	}
+	std::string respawn = std::to_string(m_iRespawnCount);
+	BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", "m_iLimitRespawns", respawn.c_str(), filename);
+	if(respawn_on)
+		ret = WritePrivateProfileStringA("Engine.R6ServerOptions", "m_bRespawn", "True", filename);
+	else
+		ret = WritePrivateProfileStringA("Engine.R6ServerOptions", "m_bRespawn", "False", filename);
 }
 void ModManager::SetDifficulty(System::String^ diff) {
 	msclr::interop::marshal_context context;
@@ -252,11 +269,13 @@ void ModManager::SetMap(int map) {
 	std::string map_code = std::to_string((map + 1) + 200);
 
 	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
-	LPCSTR key = "m_iSelectedMaps[0]";
-
 	LPCSTR value = map_code.c_str();
-	BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", key, value, filename);
 
+	for (int i = 0; i < NUM(g_aMapList); ++i) {
+		std::string key_index = "m_iSelectedMaps["+ std::to_string(i)+"]";
+		LPCSTR key = key_index.c_str();
+		BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", key, value, filename);
+	}
 
 }
 void ModManager::SetReadyUp(bool val) {
