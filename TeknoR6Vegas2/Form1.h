@@ -136,6 +136,7 @@ void InitializeComponent(void){
 	this->TimeLimitDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->TimeLimitLabel = (gcnew System::Windows::Forms::Label());
 	this->OtherModsGroup = (gcnew System::Windows::Forms::GroupBox());
+	this->GraphicsMod = (gcnew System::Windows::Forms::CheckBox());
 	this->SoundPatchBox = (gcnew System::Windows::Forms::CheckBox());
 	this->InternetBox = (gcnew System::Windows::Forms::CheckBox());
 	this->TerrorHuntGroup = (gcnew System::Windows::Forms::GroupBox());
@@ -145,7 +146,6 @@ void InitializeComponent(void){
 	this->SpawnRateDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->SelectMapLabel = (gcnew System::Windows::Forms::Label());
 	this->SpawnRateLabel = (gcnew System::Windows::Forms::Label());
-	this->GraphicsMod = (gcnew System::Windows::Forms::CheckBox());
 	(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TitlePictureBox))->BeginInit();
 	this->HostOptions->SuspendLayout();
 	this->LaunchBoxGroup->SuspendLayout();
@@ -393,12 +393,23 @@ void InitializeComponent(void){
 	this->OtherModsGroup->Controls->Add(this->GraphicsMod);
 	this->OtherModsGroup->Controls->Add(this->SoundPatchBox);
 	this->OtherModsGroup->Controls->Add(this->InternetBox);
+	this->OtherModsGroup->Enabled = false;
 	this->OtherModsGroup->Location = System::Drawing::Point(724, 415);
 	this->OtherModsGroup->Name = L"OtherModsGroup";
 	this->OtherModsGroup->Size = System::Drawing::Size(264, 94);
 	this->OtherModsGroup->TabIndex = 13;
 	this->OtherModsGroup->TabStop = false;
 	this->OtherModsGroup->Text = L"Other Mods";
+	// 
+	// GraphicsMod
+	// 
+	this->GraphicsMod->AutoSize = true;
+	this->GraphicsMod->Location = System::Drawing::Point(9, 67);
+	this->GraphicsMod->Name = L"GraphicsMod";
+	this->GraphicsMod->Size = System::Drawing::Size(115, 17);
+	this->GraphicsMod->TabIndex = 2;
+	this->GraphicsMod->Text = L"Improved Graphics";
+	this->GraphicsMod->UseVisualStyleBackColor = true;
 	// 
 	// SoundPatchBox
 	// 
@@ -493,16 +504,6 @@ void InitializeComponent(void){
 	this->SpawnRateLabel->Size = System::Drawing::Size(66, 13);
 	this->SpawnRateLabel->TabIndex = 2;
 	this->SpawnRateLabel->Text = L"Spawn Rate";
-	// 
-	// GraphicsMod
-	// 
-	this->GraphicsMod->AutoSize = true;
-	this->GraphicsMod->Location = System::Drawing::Point(9, 67);
-	this->GraphicsMod->Name = L"GraphicsMod";
-	this->GraphicsMod->Size = System::Drawing::Size(115, 17);
-	this->GraphicsMod->TabIndex = 2;
-	this->GraphicsMod->Text = L"Improved Graphics";
-	this->GraphicsMod->UseVisualStyleBackColor = true;
 	// 
 	// Form1
 	// 

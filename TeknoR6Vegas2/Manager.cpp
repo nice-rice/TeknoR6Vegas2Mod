@@ -158,11 +158,7 @@ void ModManager::ModifyMemory(){
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B3D4, &myval, 4, 0);
 		}
 	}
-	//// Eyefinity
-	//if (EyeMonitorBox->Checked == true)
-	//{
-	//	WriteProcessMemory(pi.hProcess, (LPVOID)0x12172ab8, "\x00\x00\x70\x40\x9A\x99\x99\x40\x00\x00\x80\x40", 12, 0);
-	//}
+
 	VirtualProtectEx(pi.hProcess, (LPVOID)codebase, codesize, oldprot, &newprot);
 
 	ResumeThread(pi.hThread);
