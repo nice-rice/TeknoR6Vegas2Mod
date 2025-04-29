@@ -43,7 +43,25 @@ void ModManager::StartProcess(bool start) {
 	m_bStartProcess = start;
 }
 bool ModManager::LoadProcess(LPCSTR Filename){
+	if (!m_bIsHost) {
+		if (!CreateProcess(Filename, // No module name (use command line). 
+			NULL,			  // Command line.
+			NULL,             // Process handle not inheritable. 
+			NULL,             // Thread handle not inheritable. 
+			FALSE,            // Set handle inheritance to FALSE. 
+			CREATE_SUSPENDED | CREATE_NEW_PROCESS_GROUP, // suspended creation flags. 
+			NULL,             // Use parent's environment block. 
+			NULL,             // Use parent's starting directory. 
+			&si,              // Pointer to STARTUPINFO structure.
+			&pi)             // Pointer to PROCESS_INFORMATION structure.
+			)
+		{
+			return false;
+		}
+		mycontext.ContextFlags = 0x00010000 + 1 + 2 + 4 + 8 + 0x10;
+		return true;
 	
+	}
 	// Mutable string required by CreateProcess
 	std::string commandLine = "../Binaries/RainbowSixVegas2_SADS.exe engine.servercommandlet " +
 		m_sCurrentMap + "?AgO=0?AgU=" +
@@ -103,20 +121,29 @@ int ModManager::RunTo(DWORD Address, DWORD Mode, DWORD Eip){
 
 
 void ModManager::ModifyMemory(){
-
-	PEStruct FilePEFile = getPEFileInformation("../Binaries/RainbowSixVegas2_SADS.exe");
-	if (!LoadProcess("../Binaries/RainbowSixVegas2_SADS.exe"))
+	LPCSTR filename;
+	PEStruct FilePEFile;
+	if (m_bIsHost) {
+		filename = "../Binaries/RainbowSixVegas2_SADS.exe";
+		FilePEFile = getPEFileInformation("../Binaries/RainbowSixVegas2_SADS.exe");
+	}
+	else {
+		filename = "../Binaries/R6Vegas2_Game.exe";
+		FilePEFile = getPEFileInformation("../Binaries/R6Vegas2_Game.exe");
+	}
+	
+	if (!LoadProcess(filename))
 	{
 		//WriteLog("Unable to create process for R6Vegas2_Game.exe");
 		return;
 	}
 	//else WriteLog("Created process for R6Vegas2_Game.exe");
 	DWORD OEP = FilePEFile.image_nt_headers.OptionalHeader.AddressOfEntryPoint + FilePEFile.image_nt_headers.OptionalHeader.ImageBase;
-	if (!RunTo(OEP, 1, 0))
-	{
+	if (!RunTo(OEP, 1, 0)){
 	//	WriteLog("Process crashed on init");
 		return;
 	}
+
 	//else WriteLog("Process initialized");
 	DWORD codesize = Roundby1000(FilePEFile.image_section_header[0].Misc.VirtualSize);
 	DWORD codebase = FilePEFile.image_section_header[0].VirtualAddress + FilePEFile.image_nt_headers.OptionalHeader.ImageBase;
@@ -135,12 +162,11 @@ void ModManager::ModifyMemory(){
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D4DA74, "\xBE\x00\x00\x00\x00", 5, 0);
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D4DA75, &myval, 4, 0);
 			// Player count #2 here
-		//	WriteProcessMemory(pi.hProcess,(LPVOID)0x10D67C41, "\xC7\x46\x14\x10\x00\x00\x00\x8B\x7E\x24\xEB\x1D", 12, 0);
+		//	
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D679C1, "\xC7\x46\x14\x10\x00\x00\x00\x8B\x7E\x24\xEB\x1D", 12, 0);
-			//WriteProcessMemory(pi.hProcess, (LPVOID)0x10D67C44, &myval, 4, 0);
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D679C4, &myval, 4, 0);
 			//
-			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D67C67, "\xEB\xD8\x90", 3, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D679E7, "\xEB\xD8\x90", 3, 0);
 			// Player count #3 here
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D63691, "\x83\x7E\x18\x02\x75\x47\xC7\x46\x14\x10\x00\x00\x00\xEB\x18", 15, 0);
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D6369A, &myval, 4, 0);
@@ -156,6 +182,36 @@ void ModManager::ModifyMemory(){
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B38C, "\xEB\x45\x90\x90", 4, 0);
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B3D3, "\xB8\x00\x00\x00\x00\xEB\xB6", 7, 0);
 			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B3D4, &myval, 4, 0);
+		}
+	}
+	else {
+		// Player Cap
+		if (!m_bDefaultPlayers)
+		{
+			DWORD myval = m_iMaxPlayers;
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D4DA72, "\x90\x90", 2, 0);
+			// Player count #1 here
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D4DA74, "\xBE\x00\x00\x00\x00", 5, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D4DA75, &myval, 4, 0);
+			// Player count #2 here
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D67C41, "\xC7\x46\x14\x10\x00\x00\x00\x8B\x7E\x24\xEB\x1D", 12, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D67C44, &myval, 4, 0);
+			//
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D67C67, "\xEB\xD8\x90", 3, 0);
+			// Player count #3 here
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D63911, "\x83\x7E\x18\x02\x75\x47\xC7\x46\x14\x10\x00\x00\x00\xEB\x18", 15, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D6391A, &myval, 4, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D63936, "\xEB\xD9\x83\x7E\x04\x00\x90", 7, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D6395E, "\xEB\x4D", 2, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D639AD, "\xEB\x42", 2, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10D639F1, "\x89\x46\x14\xE9\x3F\xFF\xFF\xFF", 8, 0);
+		}
+		// Terrorist Count
+		if (!m_bDefaultTerrorCount) {
+			DWORD myval = System::Convert::ToInt32(m_iTerrorCount);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B60C, "\xEB\x45\x90\x90", 4, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B653, "\xB8\x00\x00\x00\x00\xEB\xB6", 7, 0);
+			WriteProcessMemory(pi.hProcess, (LPVOID)0x10A2B654, &myval, 4, 0);
 		}
 	}
 

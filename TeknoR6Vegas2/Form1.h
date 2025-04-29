@@ -570,7 +570,7 @@ void InitializeComponent(void){
 	private: System::Void EyeMonitorBox_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {}
 	private: System::Void IsHostBox_CheckedChanged(System::Object^  sender, System::EventArgs^  e){
 
-		m_pManager->SetServer(true, ServerNameBox->Text,PasswordBox->Text);
+		m_pManager->SetServer(IsHostBox->Checked, ServerNameBox->Text,PasswordBox->Text);
 
 	}
 	private: System::Void LaunchButton_Click(System::Object^  sender, System::EventArgs^  e){
@@ -609,7 +609,7 @@ void InitializeComponent(void){
 		if (ServerNameBox->Text == "") {
 			ServerNameBox->Text = "T-Hunt-Server";
 		}
-		m_pManager->SetServer(true, ServerNameBox->Text, PasswordBox->Text);
+		m_pManager->SetServer(IsHostBox->Checked, ServerNameBox->Text, PasswordBox->Text);
 		m_pManager->SetMap(MapListDrop->SelectedIndex);
 		m_pManager->SetRespawn(RespawnDrop->Text);
 		m_pManager->SetDifficulty(DifficultyDrop->Text);
