@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="IniConfig.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="memory.cpp" />
     <ClCompile Include="PE.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="IniConfig.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="PE.h" />

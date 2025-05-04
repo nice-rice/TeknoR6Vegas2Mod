@@ -95,6 +95,10 @@ namespace TeknoR6Vegas2 {
 	private: System::Windows::Forms::CheckBox^ SoundPatchBox;
 	private: System::Windows::Forms::CheckBox^ InternetBox;
 	private: System::Windows::Forms::CheckBox^ GraphicsMod;
+	private: System::Windows::Forms::ComboBox^ GameModeBox;
+	private: System::Windows::Forms::Label^ GameModeLabel;
+
+
 
 
 
@@ -118,33 +122,35 @@ void InitializeComponent(void){
 	this->TerrorCountLabel = (gcnew System::Windows::Forms::Label());
 	this->LaunchButton = (gcnew System::Windows::Forms::Button());
 	this->HostOptions = (gcnew System::Windows::Forms::GroupBox());
+	this->GameModeBox = (gcnew System::Windows::Forms::ComboBox());
+	this->GameModeLabel = (gcnew System::Windows::Forms::Label());
 	this->ServerPWLabel = (gcnew System::Windows::Forms::Label());
-	this->DifficultyDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->ServerNameBox = (gcnew System::Windows::Forms::TextBox());
+	this->TimeLimitDrop = (gcnew System::Windows::Forms::ComboBox());
+	this->TimeLimitLabel = (gcnew System::Windows::Forms::Label());
 	this->PasswordBox = (gcnew System::Windows::Forms::TextBox());
 	this->ServerNameLabel = (gcnew System::Windows::Forms::Label());
-	this->DifficultyLabel = (gcnew System::Windows::Forms::Label());
 	this->RespawnDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->RespawnCountLabel = (gcnew System::Windows::Forms::Label());
 	this->IsHostBox = (gcnew System::Windows::Forms::CheckBox());
+	this->DifficultyDrop = (gcnew System::Windows::Forms::ComboBox());
+	this->DifficultyLabel = (gcnew System::Windows::Forms::Label());
 	this->LogTextBox = (gcnew System::Windows::Forms::RichTextBox());
 	this->GameRunningLabel = (gcnew System::Windows::Forms::Label());
 	this->LaunchBoxGroup = (gcnew System::Windows::Forms::GroupBox());
 	this->ApplyButton = (gcnew System::Windows::Forms::Button());
 	this->OtherOptionsGroup = (gcnew System::Windows::Forms::GroupBox());
+	this->MapListDrop = (gcnew System::Windows::Forms::ComboBox());
+	this->MaxPlayersDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->ReadyUpCheck = (gcnew System::Windows::Forms::CheckBox());
-	this->TimeLimitDrop = (gcnew System::Windows::Forms::ComboBox());
-	this->TimeLimitLabel = (gcnew System::Windows::Forms::Label());
+	this->SelectMapLabel = (gcnew System::Windows::Forms::Label());
 	this->OtherModsGroup = (gcnew System::Windows::Forms::GroupBox());
 	this->GraphicsMod = (gcnew System::Windows::Forms::CheckBox());
 	this->SoundPatchBox = (gcnew System::Windows::Forms::CheckBox());
 	this->InternetBox = (gcnew System::Windows::Forms::CheckBox());
 	this->TerrorHuntGroup = (gcnew System::Windows::Forms::GroupBox());
-	this->MaxPlayersDrop = (gcnew System::Windows::Forms::ComboBox());
-	this->MapListDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->TerrorCountDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->SpawnRateDrop = (gcnew System::Windows::Forms::ComboBox());
-	this->SelectMapLabel = (gcnew System::Windows::Forms::Label());
 	this->SpawnRateLabel = (gcnew System::Windows::Forms::Label());
 	(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TitlePictureBox))->BeginInit();
 	this->HostOptions->SuspendLayout();
@@ -169,7 +175,7 @@ void InitializeComponent(void){
 	// 
 	this->MaxPlayersLabel->AutoSize = true;
 	this->MaxPlayersLabel->BackColor = System::Drawing::Color::Transparent;
-	this->MaxPlayersLabel->Location = System::Drawing::Point(6, 142);
+	this->MaxPlayersLabel->Location = System::Drawing::Point(11, 57);
 	this->MaxPlayersLabel->Name = L"MaxPlayersLabel";
 	this->MaxPlayersLabel->Size = System::Drawing::Size(64, 13);
 	this->MaxPlayersLabel->TabIndex = 2;
@@ -197,21 +203,45 @@ void InitializeComponent(void){
 	// 
 	// HostOptions
 	// 
+	this->HostOptions->Controls->Add(this->GameModeBox);
+	this->HostOptions->Controls->Add(this->GameModeLabel);
 	this->HostOptions->Controls->Add(this->ServerPWLabel);
-	this->HostOptions->Controls->Add(this->DifficultyDrop);
 	this->HostOptions->Controls->Add(this->ServerNameBox);
+	this->HostOptions->Controls->Add(this->TimeLimitDrop);
+	this->HostOptions->Controls->Add(this->TimeLimitLabel);
 	this->HostOptions->Controls->Add(this->PasswordBox);
 	this->HostOptions->Controls->Add(this->ServerNameLabel);
-	this->HostOptions->Controls->Add(this->DifficultyLabel);
 	this->HostOptions->Controls->Add(this->RespawnDrop);
 	this->HostOptions->Controls->Add(this->RespawnCountLabel);
 	this->HostOptions->Controls->Add(this->IsHostBox);
-	this->HostOptions->Location = System::Drawing::Point(63, 127);
+	this->HostOptions->Location = System::Drawing::Point(63, 146);
 	this->HostOptions->Name = L"HostOptions";
-	this->HostOptions->Size = System::Drawing::Size(264, 261);
+	this->HostOptions->Size = System::Drawing::Size(264, 293);
 	this->HostOptions->TabIndex = 7;
 	this->HostOptions->TabStop = false;
 	this->HostOptions->Text = L"Host options";
+	// 
+	// GameModeBox
+	// 
+	this->GameModeBox->FormattingEnabled = true;
+	this->GameModeBox->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+		L"CoopTerroristHunt", L"AttackDefend", L"Deathmatch",
+			L"TeamDeathmatch", L"TeamLeader", L"Conquest", L"Sharpshooter", L"TeamSharpshooter"
+	});
+	this->GameModeBox->Location = System::Drawing::Point(10, 166);
+	this->GameModeBox->Name = L"GameModeBox";
+	this->GameModeBox->Size = System::Drawing::Size(218, 21);
+	this->GameModeBox->TabIndex = 25;
+	// 
+	// GameModeLabel
+	// 
+	this->GameModeLabel->AutoSize = true;
+	this->GameModeLabel->BackColor = System::Drawing::Color::Transparent;
+	this->GameModeLabel->Location = System::Drawing::Point(11, 150);
+	this->GameModeLabel->Name = L"GameModeLabel";
+	this->GameModeLabel->Size = System::Drawing::Size(65, 13);
+	this->GameModeLabel->TabIndex = 24;
+	this->GameModeLabel->Text = L"Game Mode";
 	// 
 	// ServerPWLabel
 	// 
@@ -223,22 +253,32 @@ void InitializeComponent(void){
 	this->ServerPWLabel->TabIndex = 19;
 	this->ServerPWLabel->Text = L"Server Password";
 	// 
-	// DifficultyDrop
-	// 
-	this->DifficultyDrop->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
-	this->DifficultyDrop->FormattingEnabled = true;
-	this->DifficultyDrop->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Easy", L"Normal", L"Realistic" });
-	this->DifficultyDrop->Location = System::Drawing::Point(10, 198);
-	this->DifficultyDrop->Name = L"DifficultyDrop";
-	this->DifficultyDrop->Size = System::Drawing::Size(218, 21);
-	this->DifficultyDrop->TabIndex = 19;
-	// 
 	// ServerNameBox
 	// 
 	this->ServerNameBox->Location = System::Drawing::Point(10, 66);
 	this->ServerNameBox->Name = L"ServerNameBox";
 	this->ServerNameBox->Size = System::Drawing::Size(217, 20);
 	this->ServerNameBox->TabIndex = 17;
+	// 
+	// TimeLimitDrop
+	// 
+	this->TimeLimitDrop->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+	this->TimeLimitDrop->FormattingEnabled = true;
+	this->TimeLimitDrop->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"3", L"5", L"10", L"15", L"20" });
+	this->TimeLimitDrop->Location = System::Drawing::Point(9, 254);
+	this->TimeLimitDrop->Name = L"TimeLimitDrop";
+	this->TimeLimitDrop->Size = System::Drawing::Size(218, 21);
+	this->TimeLimitDrop->TabIndex = 21;
+	// 
+	// TimeLimitLabel
+	// 
+	this->TimeLimitLabel->AutoSize = true;
+	this->TimeLimitLabel->BackColor = System::Drawing::Color::Transparent;
+	this->TimeLimitLabel->Location = System::Drawing::Point(10, 238);
+	this->TimeLimitLabel->Name = L"TimeLimitLabel";
+	this->TimeLimitLabel->Size = System::Drawing::Size(89, 13);
+	this->TimeLimitLabel->TabIndex = 20;
+	this->TimeLimitLabel->Text = L"Round Time Limit";
 	// 
 	// PasswordBox
 	// 
@@ -257,23 +297,13 @@ void InitializeComponent(void){
 	this->ServerNameLabel->TabIndex = 11;
 	this->ServerNameLabel->Text = L"Server Name";
 	// 
-	// DifficultyLabel
-	// 
-	this->DifficultyLabel->AutoSize = true;
-	this->DifficultyLabel->BackColor = System::Drawing::Color::Transparent;
-	this->DifficultyLabel->Location = System::Drawing::Point(11, 182);
-	this->DifficultyLabel->Name = L"DifficultyLabel";
-	this->DifficultyLabel->Size = System::Drawing::Size(47, 13);
-	this->DifficultyLabel->TabIndex = 4;
-	this->DifficultyLabel->Text = L"Difficulty";
-	// 
 	// RespawnDrop
 	// 
 	this->RespawnDrop->DisplayMember = L"1";
 	this->RespawnDrop->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 	this->RespawnDrop->FormattingEnabled = true;
 	this->RespawnDrop->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"None", L"1", L"2", L"3", L"Unlimited" });
-	this->RespawnDrop->Location = System::Drawing::Point(11, 158);
+	this->RespawnDrop->Location = System::Drawing::Point(11, 206);
 	this->RespawnDrop->Name = L"RespawnDrop";
 	this->RespawnDrop->Size = System::Drawing::Size(216, 21);
 	this->RespawnDrop->TabIndex = 10;
@@ -282,7 +312,7 @@ void InitializeComponent(void){
 	// 
 	this->RespawnCountLabel->AutoSize = true;
 	this->RespawnCountLabel->BackColor = System::Drawing::Color::Transparent;
-	this->RespawnCountLabel->Location = System::Drawing::Point(11, 142);
+	this->RespawnCountLabel->Location = System::Drawing::Point(11, 190);
 	this->RespawnCountLabel->Name = L"RespawnCountLabel";
 	this->RespawnCountLabel->Size = System::Drawing::Size(83, 13);
 	this->RespawnCountLabel->TabIndex = 11;
@@ -300,6 +330,26 @@ void InitializeComponent(void){
 	this->IsHostBox->Text = L"Run SADS";
 	this->IsHostBox->UseVisualStyleBackColor = true;
 	this->IsHostBox->CheckedChanged += gcnew System::EventHandler(this, &Form1::IsHostBox_CheckedChanged);
+	// 
+	// DifficultyDrop
+	// 
+	this->DifficultyDrop->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+	this->DifficultyDrop->FormattingEnabled = true;
+	this->DifficultyDrop->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Easy", L"Normal", L"Realistic" });
+	this->DifficultyDrop->Location = System::Drawing::Point(6, 156);
+	this->DifficultyDrop->Name = L"DifficultyDrop";
+	this->DifficultyDrop->Size = System::Drawing::Size(218, 21);
+	this->DifficultyDrop->TabIndex = 19;
+	// 
+	// DifficultyLabel
+	// 
+	this->DifficultyLabel->AutoSize = true;
+	this->DifficultyLabel->BackColor = System::Drawing::Color::Transparent;
+	this->DifficultyLabel->Location = System::Drawing::Point(7, 140);
+	this->DifficultyLabel->Name = L"DifficultyLabel";
+	this->DifficultyLabel->Size = System::Drawing::Size(47, 13);
+	this->DifficultyLabel->TabIndex = 4;
+	this->DifficultyLabel->Text = L"Difficulty";
 	// 
 	// LogTextBox
 	// 
@@ -348,45 +398,56 @@ void InitializeComponent(void){
 	// 
 	// OtherOptionsGroup
 	// 
+	this->OtherOptionsGroup->Controls->Add(this->MapListDrop);
+	this->OtherOptionsGroup->Controls->Add(this->MaxPlayersDrop);
 	this->OtherOptionsGroup->Controls->Add(this->ReadyUpCheck);
-	this->OtherOptionsGroup->Controls->Add(this->TimeLimitDrop);
-	this->OtherOptionsGroup->Controls->Add(this->TimeLimitLabel);
-	this->OtherOptionsGroup->Location = System::Drawing::Point(63, 415);
+	this->OtherOptionsGroup->Controls->Add(this->MaxPlayersLabel);
+	this->OtherOptionsGroup->Controls->Add(this->SelectMapLabel);
+	this->OtherOptionsGroup->Location = System::Drawing::Point(725, 146);
 	this->OtherOptionsGroup->Name = L"OtherOptionsGroup";
-	this->OtherOptionsGroup->Size = System::Drawing::Size(264, 140);
+	this->OtherOptionsGroup->Size = System::Drawing::Size(264, 150);
 	this->OtherOptionsGroup->TabIndex = 12;
 	this->OtherOptionsGroup->TabStop = false;
 	this->OtherOptionsGroup->Text = L"Other Options";
 	// 
+	// MapListDrop
+	// 
+	this->MapListDrop->Location = System::Drawing::Point(10, 119);
+	this->MapListDrop->Name = L"MapListDrop";
+	this->MapListDrop->Size = System::Drawing::Size(218, 21);
+	this->MapListDrop->TabIndex = 21;
+	// 
+	// MaxPlayersDrop
+	// 
+	this->MaxPlayersDrop->FormattingEnabled = true;
+	this->MaxPlayersDrop->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+		L"1", L"2", L"3", L"4", L"5", L"6", L"7",
+			L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16"
+	});
+	this->MaxPlayersDrop->Location = System::Drawing::Point(10, 73);
+	this->MaxPlayersDrop->Name = L"MaxPlayersDrop";
+	this->MaxPlayersDrop->Size = System::Drawing::Size(218, 21);
+	this->MaxPlayersDrop->TabIndex = 22;
+	// 
 	// ReadyUpCheck
 	// 
 	this->ReadyUpCheck->AutoSize = true;
-	this->ReadyUpCheck->Location = System::Drawing::Point(10, 78);
+	this->ReadyUpCheck->Location = System::Drawing::Point(13, 26);
 	this->ReadyUpCheck->Name = L"ReadyUpCheck";
 	this->ReadyUpCheck->Size = System::Drawing::Size(120, 17);
 	this->ReadyUpCheck->TabIndex = 23;
 	this->ReadyUpCheck->Text = L"Ready Up Required";
 	this->ReadyUpCheck->UseVisualStyleBackColor = true;
 	// 
-	// TimeLimitDrop
+	// SelectMapLabel
 	// 
-	this->TimeLimitDrop->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
-	this->TimeLimitDrop->FormattingEnabled = true;
-	this->TimeLimitDrop->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"3", L"5", L"10", L"15", L"20" });
-	this->TimeLimitDrop->Location = System::Drawing::Point(10, 38);
-	this->TimeLimitDrop->Name = L"TimeLimitDrop";
-	this->TimeLimitDrop->Size = System::Drawing::Size(218, 21);
-	this->TimeLimitDrop->TabIndex = 21;
-	// 
-	// TimeLimitLabel
-	// 
-	this->TimeLimitLabel->AutoSize = true;
-	this->TimeLimitLabel->BackColor = System::Drawing::Color::Transparent;
-	this->TimeLimitLabel->Location = System::Drawing::Point(11, 22);
-	this->TimeLimitLabel->Name = L"TimeLimitLabel";
-	this->TimeLimitLabel->Size = System::Drawing::Size(89, 13);
-	this->TimeLimitLabel->TabIndex = 20;
-	this->TimeLimitLabel->Text = L"Round Time Limit";
+	this->SelectMapLabel->AutoSize = true;
+	this->SelectMapLabel->BackColor = System::Drawing::Color::Transparent;
+	this->SelectMapLabel->Location = System::Drawing::Point(11, 103);
+	this->SelectMapLabel->Name = L"SelectMapLabel";
+	this->SelectMapLabel->Size = System::Drawing::Size(61, 13);
+	this->SelectMapLabel->TabIndex = 14;
+	this->SelectMapLabel->Text = L"Select Map";
 	// 
 	// OtherModsGroup
 	// 
@@ -394,7 +455,7 @@ void InitializeComponent(void){
 	this->OtherModsGroup->Controls->Add(this->SoundPatchBox);
 	this->OtherModsGroup->Controls->Add(this->InternetBox);
 	this->OtherModsGroup->Enabled = false;
-	this->OtherModsGroup->Location = System::Drawing::Point(724, 415);
+	this->OtherModsGroup->Location = System::Drawing::Point(63, 461);
 	this->OtherModsGroup->Name = L"OtherModsGroup";
 	this->OtherModsGroup->Size = System::Drawing::Size(264, 94);
 	this->OtherModsGroup->TabIndex = 13;
@@ -433,39 +494,18 @@ void InitializeComponent(void){
 	// 
 	// TerrorHuntGroup
 	// 
-	this->TerrorHuntGroup->Controls->Add(this->MaxPlayersDrop);
-	this->TerrorHuntGroup->Controls->Add(this->MapListDrop);
 	this->TerrorHuntGroup->Controls->Add(this->TerrorCountDrop);
+	this->TerrorHuntGroup->Controls->Add(this->DifficultyDrop);
+	this->TerrorHuntGroup->Controls->Add(this->DifficultyLabel);
 	this->TerrorHuntGroup->Controls->Add(this->SpawnRateDrop);
-	this->TerrorHuntGroup->Controls->Add(this->SelectMapLabel);
 	this->TerrorHuntGroup->Controls->Add(this->SpawnRateLabel);
 	this->TerrorHuntGroup->Controls->Add(this->TerrorCountLabel);
-	this->TerrorHuntGroup->Controls->Add(this->MaxPlayersLabel);
-	this->TerrorHuntGroup->Location = System::Drawing::Point(719, 117);
+	this->TerrorHuntGroup->Location = System::Drawing::Point(725, 350);
 	this->TerrorHuntGroup->Name = L"TerrorHuntGroup";
-	this->TerrorHuntGroup->Size = System::Drawing::Size(264, 271);
+	this->TerrorHuntGroup->Size = System::Drawing::Size(264, 205);
 	this->TerrorHuntGroup->TabIndex = 17;
 	this->TerrorHuntGroup->TabStop = false;
 	this->TerrorHuntGroup->Text = L"Terrorist Hunt";
-	// 
-	// MaxPlayersDrop
-	// 
-	this->MaxPlayersDrop->FormattingEnabled = true;
-	this->MaxPlayersDrop->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-		L"1", L"2", L"3", L"4", L"5", L"6", L"7",
-			L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16"
-	});
-	this->MaxPlayersDrop->Location = System::Drawing::Point(5, 158);
-	this->MaxPlayersDrop->Name = L"MaxPlayersDrop";
-	this->MaxPlayersDrop->Size = System::Drawing::Size(218, 21);
-	this->MaxPlayersDrop->TabIndex = 22;
-	// 
-	// MapListDrop
-	// 
-	this->MapListDrop->Location = System::Drawing::Point(5, 217);
-	this->MapListDrop->Name = L"MapListDrop";
-	this->MapListDrop->Size = System::Drawing::Size(218, 21);
-	this->MapListDrop->TabIndex = 21;
 	// 
 	// TerrorCountDrop
 	// 
@@ -484,16 +524,6 @@ void InitializeComponent(void){
 	this->SpawnRateDrop->Name = L"SpawnRateDrop";
 	this->SpawnRateDrop->Size = System::Drawing::Size(218, 21);
 	this->SpawnRateDrop->TabIndex = 18;
-	// 
-	// SelectMapLabel
-	// 
-	this->SelectMapLabel->AutoSize = true;
-	this->SelectMapLabel->BackColor = System::Drawing::Color::Transparent;
-	this->SelectMapLabel->Location = System::Drawing::Point(6, 201);
-	this->SelectMapLabel->Name = L"SelectMapLabel";
-	this->SelectMapLabel->Size = System::Drawing::Size(61, 13);
-	this->SelectMapLabel->TabIndex = 14;
-	this->SelectMapLabel->Text = L"Select Map";
 	// 
 	// SpawnRateLabel
 	// 
@@ -542,24 +572,26 @@ void InitializeComponent(void){
 				Control::CheckForIllegalCrossThreadCalls = false;
 				 if(File::Exists("../Binaries/RainbowSixVegas2_SADS.exe") == false)
 				 {
-					 MessageBox::Show("Unable to find RainbowSixVegas2_SADS.exe", "Error");
+					 MessageBox::Show("Unable to find RainbowSixVegas2 game files", "Error");
 					 Application::Exit();
 					 return;
 				 }
-					
-				array< System::Object^  >^ mapList = gcnew array< System::Object^  >(18);
-				for (int i = 0; i < 18; ++i) {
-					mapList[i] = gcnew String(m_pManager->g_aMapList[i].c_str());
+				//Populate map list by grabbing from Modmanager -> IniConfig class
+				array< System::Object^  >^ mapList = gcnew array< System::Object^  >(17);
+				for (int i = 0; i < 17; ++i) {
+					mapList[i] = gcnew String(m_pManager->GetMapName(i).c_str());
 				}
 				MapListDrop->Items->AddRange(mapList);
-
+				
+				//Set Default Values on startup
 				 MaxPlayersDrop->SelectedIndex = 15;
-				 TerrorCountDrop->SelectedIndex = 0;
+				 TerrorCountDrop->SelectedIndex = 2;
 				 MapListDrop->SelectedIndex = 0;
 				 SpawnRateDrop->SelectedIndex = 2;
 				 DifficultyDrop->SelectedIndex = 2;
 				 TimeLimitDrop->SelectedIndex = 4;
-				 RespawnDrop->SelectedIndex = 1;
+				 RespawnDrop->SelectedIndex = 4;
+				 GameModeBox->SelectedIndex = 0;
 
 	}
 	private: void WriteLog(String^ Writto){
@@ -587,17 +619,20 @@ void InitializeComponent(void){
 		WriteLog("Map Selection: "+MapListDrop->Text); 
 		time_t timetoday;
 		time(&timetoday);
-		//std::string launch_time = asctime(localtime(&timetoday));
+
 		System::String^ launch_time_t = gcnew String(asctime(localtime(&timetoday)));
 		WriteLog("Time Started: "+ launch_time_t);
-	
+		
+		//Begin launching the game
 		m_pManager->StartProcess(true);
-		static int i = 0;
-		++i;
-		if (i > 17) {
-			i = 0;
-		}
-		MapListDrop->SelectedIndex = i;
+		
+		//Set the drop down to the next map?
+		//static int i = 0;
+		//++i;
+		//if (i > 16) {
+		//	i = 0;
+		//}
+		//MapListDrop->SelectedIndex = i;
 	}
 
 	private: System::Void ApplyButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -609,6 +644,7 @@ void InitializeComponent(void){
 		if (ServerNameBox->Text == "") {
 			ServerNameBox->Text = "T-Hunt-Server";
 		}
+		m_pManager->SetGameMode(GameModeBox->Text);
 		m_pManager->SetServer(IsHostBox->Checked, ServerNameBox->Text, PasswordBox->Text);
 		m_pManager->SetMap(MapListDrop->SelectedIndex);
 		m_pManager->SetRespawn(RespawnDrop->Text);
