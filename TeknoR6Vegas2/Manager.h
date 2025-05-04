@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "PE.h"
 #include "memory.h"
+#include "IniConfig.h"
 
 #include <string>
 #include <cstring>
@@ -23,6 +24,9 @@ public:
 	void StartProcess(bool start);
 	void ModifyMemory();
 
+	std::string GetMapName(int index);
+
+	void SetGameMode(System::String^ mode);
 	void SetServer(bool s, System::String^ name, System::String^ pwd);
 	void SetRespawn(System::String^ val);
 	void SetDifficulty(System::String^ diff);
@@ -33,32 +37,15 @@ public:
 	void SetMap(int map);
 	void SetReadyUp(bool val);
 	
-	const std::string g_aMapList[18] = {
-	"Mb01_Import",
-	"Mb02_Dantes_01",
-	"Mb03_Neon_01",
-	"Mb04_Oil",
-	"Mb05_Chinese",
-	"Mb06_Trainyard",
-	"Mb07_Penthouse_01",
-	"Mb08_Conven_01",
-	"Mb_09_Murdertown",
-	"Mb10_Training_01",
-	"Mb11_Streets_01_linkapp",
-	"Mb12_KillHouse",
-	"Mb13_Presidio",
-	"DLC_MP_Casino_01",
-	"DLC_Murdertown_2",
-	"DLC_Training_02",
-	"MB14_Convent_MLG",
-	"02_LVU_02"
-	};
+
 
 private:
 	_CONTEXT mycontext;
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	
+	IniConfig* m_pIniConfig;
+
 	bool m_bStartProcess;
 	
 	bool m_bIsHost;
@@ -66,6 +53,7 @@ private:
 	bool m_bDefaultTerrorCount;
 	std::string m_sServerName;
 	std::string m_sServerPassword;
+	std::string m_sGameMode;
 
 	int m_iMaxPlayers;
 	int m_iTerrorCount;

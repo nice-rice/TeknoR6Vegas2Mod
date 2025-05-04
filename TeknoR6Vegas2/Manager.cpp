@@ -3,6 +3,9 @@
 #include <msclr\marshal_cppstd.h>
 
 ModManager::ModManager() {
+	
+	m_pIniConfig = new IniConfig;
+	
 	m_bStartProcess = false;
 	m_sCurrentMap = "Mb01_Import";
 
@@ -41,6 +44,12 @@ void ModManager::Init() {
 }
 void ModManager::StartProcess(bool start) {
 	m_bStartProcess = start;
+
+	m_pIniConfig->SetGadgets();
+	m_pIniConfig->SetInternet();
+	m_pIniConfig->SetWeapons();
+	m_pIniConfig->SetSound();
+
 }
 bool ModManager::LoadProcess(LPCSTR Filename){
 	if (!m_bIsHost) {
@@ -63,10 +72,12 @@ bool ModManager::LoadProcess(LPCSTR Filename){
 	
 	}
 	// Mutable string required by CreateProcess
+	std::string mode = "CoopTerroristHunt";
 	std::string commandLine = "../Binaries/RainbowSixVegas2_SADS.exe engine.servercommandlet " +
 		m_sCurrentMap + "?AgO=0?AgU=" +
 		m_sServerName + "?AgP=?SrvOptionFile=R6VegasServerConfig?PW=" +
-		m_sServerPassword + "?GAME=R6Game.R6CoopTerroristHuntGame?GD=" +
+		m_sServerPassword + "?GAME=R6Game.R6" +
+		m_sGameMode + "Game?GD=" +
 		std::to_string(m_iDifficulty) + "?BT=30?TBR="+
 		std::to_string(m_iTimeBetween)+"?RD="+
 		std::to_string(m_iTimeLimit)+"?";
@@ -232,15 +243,21 @@ void ModManager::ModifyMemory(){
 
 }
 
+std::string ModManager::GetMapName(int index) {
+
+	return m_pIniConfig->g_aMapList[index];
+}
+void ModManager::SetGameMode(System::String^ mode) {
+	msclr::interop::marshal_context context;
+	m_sGameMode = context.marshal_as<std::string>(mode);
+}
 void ModManager::SetServer(bool s, System::String^ name, System::String^ pwd) {
 	m_bIsHost = s;
 	msclr::interop::marshal_context context;
 	m_sServerName = context.marshal_as<std::string>(name);
 	m_sServerPassword = context.marshal_as<std::string>(pwd);
-
 }
 void ModManager::SetRespawn(System::String^ val) {
-	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
 	bool respawn_on = true;
 	if (val == "None") {
 		m_iRespawnCount = 1;
@@ -252,12 +269,8 @@ void ModManager::SetRespawn(System::String^ val) {
 	else {
 		m_iRespawnCount = System::Convert::ToInt32(val)+1;
 	}
-	std::string respawn = std::to_string(m_iRespawnCount);
-	BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", "m_iLimitRespawns", respawn.c_str(), filename);
-	if(respawn_on)
-		ret = WritePrivateProfileStringA("Engine.R6ServerOptions", "m_bRespawn", "True", filename);
-	else
-		ret = WritePrivateProfileStringA("Engine.R6ServerOptions", "m_bRespawn", "False", filename);
+	m_pIniConfig->SetRespawn(respawn_on, m_iRespawnCount);
+
 }
 void ModManager::SetDifficulty(System::String^ diff) {
 	msclr::interop::marshal_context context;
@@ -270,13 +283,8 @@ void ModManager::SetDifficulty(System::String^ diff) {
 }
 void ModManager::SetTimeLimit(int val) {
 	m_iTimeLimit = val*60;
-	std::string time_limt = std::to_string(m_iTimeLimit);
+	m_pIniConfig->SetTimeLimit(m_iTimeLimit);
 
-	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
-	LPCSTR key = "m_iRoundDuration";
-
-	LPCSTR value = time_limt.c_str();
-	BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", key, value, filename);
 }
 void ModManager::SetSpawnRate(System::Object^ val) {
 	if (val != "Default") {
@@ -285,22 +293,13 @@ void ModManager::SetSpawnRate(System::Object^ val) {
 	else {
 		m_iSpawnRate = 8;
 	}
-	std::string spawn = std::to_string(m_iSpawnRate);
-
-	LPCSTR filename = "../KellerGame/Config/PlatformSpecificConfigPC.ini";
-	LPCSTR key = "MaxTerrorist";
-		
-	LPCSTR value = spawn.c_str();
-	BOOL ret = WritePrivateProfileStringA("Gameplay", key, value, filename);
-	key = "MaxTerroristTerroHunt";
-	ret = WritePrivateProfileStringA("Gameplay", key, value, filename);
+	m_pIniConfig->SetSpawnRate(m_iSpawnRate);
 	
 }
 void ModManager::SetTerrorCount(System::Object^ val) {
 	if (val != "Default") {
 		m_bDefaultTerrorCount = false;
 		m_iTerrorCount = System::Convert::ToInt32(val);
-		
 	}
 	else {
 		m_bDefaultTerrorCount = true;
@@ -317,17 +316,8 @@ void ModManager::SetMaxPlayers(int val) {
 }
 void ModManager::SetMap(int map) {
 	
-	m_sCurrentMap = g_aMapList[map];
-	std::string map_code = std::to_string((map + 1) + 200);
-
-	LPCSTR filename = "../KellerGame/Config/PC/R6VegasServerConfig.ini";
-	LPCSTR value = map_code.c_str();
-
-	for (int i = 0; i < NUM(g_aMapList); ++i) {
-		std::string key_index = "m_iSelectedMaps["+ std::to_string(i)+"]";
-		LPCSTR key = key_index.c_str();
-		BOOL ret = WritePrivateProfileStringA("Engine.R6ServerOptions", key, value, filename);
-	}
+	m_sCurrentMap = GetMapName(map);
+	m_pIniConfig->SetMap(map);
 
 }
 void ModManager::SetReadyUp(bool val) {
