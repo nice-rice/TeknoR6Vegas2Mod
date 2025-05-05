@@ -1,87 +1,202 @@
 #include "IniConfig.h"
 
-IniConfig::IniConfig() {}
+IniConfig::IniConfig() {
+	
+	//Create Back ups of any altered config files
+	//Doesn't overwrite once copied
+	CreateDirectory("../BackupConfig/",NULL);
+	CopyFile("../KellerGame/Config/PCKellerEngine.ini", "../BackupConfig/PCKellerEngine.ini", true);
+	CopyFile("../KellerGame/Config/DefaultEngine.ini", "../BackupConfig/DefaultEngine.ini", true);
+	CopyFile("../Engine/Config/BaseEngine.ini", "../BackupConfig/BaseEngine.ini", true);
+	CopyFile("../KellerGame/Config/DefaultWeaponsConfig.ini", "../BackupConfig/DefaultWeaponsConfig.ini", true);
+	CopyFile("../KellerGame/Config/DefaultGadgetsConfig.ini", "../BackupConfig/DefaultGadgetsConfig.ini", true);
+	CopyFile("../KellerGame/Config/PC/R6VegasServerConfig.ini", "../BackupConfig/R6VegasServerConfig.ini", true);
+	CopyFile("../KellerGame/Config/PlatformSpecificConfigPC.ini", "../BackupConfig/R6VegasServerConfig.ini", true);
+	
+}
 IniConfig::~IniConfig() {}
 
+void IniConfig::RestoreBackup() {
+	CopyFile("../BackupConfig/BaseEngine.ini", "../Engine/Config/BaseEngine.ini", false);
+	CopyFile("../BackupConfig/DefaultEngine.ini", "../KellerGame/Config/DefaultEngine.ini", false);
+	CopyFile("../BackupConfig/DefaultWeaponsConfig.ini", "../KellerGame/Config/DefaultWeaponsConfig.ini", false);
+	CopyFile("../BackupConfig/DefaultGadgetsConfig.ini", "../KellerGame/Config/DefaultGadgetsConfig.ini", false);
+	CopyFile( "../BackupConfig/R6VegasServerConfig.ini", "../KellerGame/Config/PC/R6VegasServerConfig.ini", false);
+	CopyFile("../BackupConfig/R6VegasServerConfig.ini", "../KellerGame/Config/PlatformSpecificConfigPC.ini", false);
+	CopyFile("../KellerGame/Config/PlatformSpecificConfigPC.ini", "../BackupConfig/R6VegasServerConfig.ini", false);
 
-void IniConfig::SetInternet() {
-	
-	LPCSTR filename = "../KellerGame/Config/PCKellerEngine.ini";
-	
-	for (int i = 0; i < 2; ++i) {
-
-		LPCSTR section = "Engine.Player";
-		WriteINI(filename, section, "ConfiguredInternetSpeed", "500000");
-		WriteINI(filename, section, "ConfiguredLanSpeed", "500000");
-
-		section = "IpDrv.TcpNetDriver";
-		WriteINI(filename, section, "AllowDownloads", "True");
-		WriteINI(filename, section, "EnableTimeout", "True");
-		WriteINI(filename, section, "ConnectionTimeout", "30.0");
-		WriteINI(filename, section, "InitialConnectTimeout", "30.0");
-
-		WriteINI(filename, section, "AckTimeout", "0.5");
-		WriteINI(filename, section, "KeepAliveTime", "0.1");
-		WriteINI(filename, section, "MaxClientRate", "100000");
-		WriteINI(filename, section, "MaxInternetClientRate", "100000");
-
-		WriteINI(filename, section, "RelevantTimeout", "10.0");
-		WriteINI(filename, section, "SpawnPrioritySeconds", "0.5");
-		WriteINI(filename, section, "ServerTravelPause", "10.0");
-		WriteINI(filename, section, "NetServerMaxTickRate", "60");
-		WriteINI(filename, section, "LanServerMaxTickRate", "60");
-
-		//Repeat for BaseEngine file
-		filename = "../Engine/Config/BaseEngine.ini";
-	}
-}
-
-void IniConfig::SetSound() {
-	LPCSTR filename = "../KellerGame/Config/PCKellerEngine.ini";
-	LPCSTR section = "ALAudio.ALAudioDevice";
-
-	for (int i = 0; i < 2; ++i) {
-		WriteINI(filename, section, "MaxChannels", "64");
-		WriteINI(filename, section, "TimeBetweenHWUpdates", "5");
-		filename = "../Engine/Config/BaseEngine.ini";
-	}
-}
-
-void IniConfig::SetWeapons() {
-	//
-	//R6Game.ConfigR6SubMP5N
-//m_iDefaultAmmunitionRealistic 500
-	
-	LPCSTR filename = "../KellerGame/Config/DefaultWeaponsConfig.ini";
-	LPCSTR key = "m_iDefaultAmmunitionRealistic";
-	LPCSTR value = "500";
-	LPCSTR section = "";
-
-	for (int i = 0; i < NUM(g_aWeaponList); ++i) {
-		std::string header = "R6Game." + g_aWeaponList[i];
-		section = header.c_str();
-		WriteINI(filename, section, key, value);
-	}
 
 }
 
-void IniConfig::SetGadgets() {
-
-	LPCSTR filename = "../KellerGame/Config/DefaultGadgetsConfig.ini";
-	LPCSTR a_section[8] = { "R6Game.R6GadgetGrenadeFlashbang","R6Game.R6GadgetGrenadeFrag",
-							"R6Game.R6GadgetGrenadeIncendiary","R6Game.R6GadgetGrenadeMolotov",
-							"R6Game.R6GadgetGrenadeSmoke", "R6Game.R6GadgetGrenadeTearGas",
-							"R6Game.R6GadgetExplosiveBreaching","R6Game.R6GadgetExplosiveDemolition"
-							};
-	LPCSTR key = "m_iMaxAmmoRealistic";
-	LPCSTR value = "9";
-
-	for (int i = 0; i < NUM(a_section); ++i) {
-		WriteINI(filename, a_section[i], key, value);
+void IniConfig::SetInternet(bool set) {
+	if (!set) {
+		CopyFile("../BackupConfig/BaseEngine.ini", "../Engine/Config/BaseEngine.ini", false);
+		CopyFile( "../BackupConfig/PCKellerEngine.ini", "../KellerGame/Config/PCKellerEngine.ini", false);
+		CopyFile("../BackupConfig/DefaultEngine.ini", "../KellerGame/Config/DefaultEngine.ini", false);
 	}
+	else {
+		LPCSTR filename = "../KellerGame/Config/PCKellerEngine.ini";
+		for (int i = 0; i < 3; ++i) {
 
+			LPCSTR section = "Engine.Player";
+			WriteINI(filename, section, "ConfiguredInternetSpeed", "500000");
+			WriteINI(filename, section, "ConfiguredLanSpeed", "500000");
+
+			section = "IpDrv.TcpNetDriver";
+			WriteINI(filename, section, "AllowDownloads", "True");
+			WriteINI(filename, section, "EnableTimeout", "True");
+			WriteINI(filename, section, "ConnectionTimeout", "30.0");
+			WriteINI(filename, section, "InitialConnectTimeout", "30.0");
+
+			WriteINI(filename, section, "AckTimeout", "0.5");
+			WriteINI(filename, section, "KeepAliveTime", "0.1");
+			WriteINI(filename, section, "MaxClientRate", "100000");
+			WriteINI(filename, section, "MaxInternetClientRate", "100000");
+
+			WriteINI(filename, section, "RelevantTimeout", "10.0");
+			WriteINI(filename, section, "SpawnPrioritySeconds", "0.5");
+			WriteINI(filename, section, "ServerTravelPause", "10.0");
+			WriteINI(filename, section, "NetServerMaxTickRate", "60");
+			WriteINI(filename, section, "LanServerMaxTickRate", "60");
+
+			//Repeat for BaseEngine and Default engine file
+			if(i ==1)
+				filename = "../KellerGame/Config/DefaultEngine.ini";
+			else
+				filename = "../Engine/Config/BaseEngine.ini";
+		}
+	}
 }
 
+void IniConfig::SetSound(bool set) {
+	if (!set) {
+		CopyFile("../BackupConfig/BaseEngine.ini", "../Engine/Config/BaseEngine.ini", false);
+		CopyFile("../BackupConfig/PCKellerEngine.ini", "../KellerGame/Config/PCKellerEngine.ini", false);
+		CopyFile("../BackupConfig/DefaultEngine.ini", "../KellerGame/Config/DefaultEngine.ini", false);
+	}
+	else{
+		LPCSTR filename = "../KellerGame/Config/PCKellerEngine.ini";
+		LPCSTR section = "ALAudio.ALAudioDevice";
+
+		for (int i = 0; i < 3; ++i) {
+			WriteINI(filename, section, "MaxChannels", "64");
+			WriteINI(filename, section, "TimeBetweenHWUpdates", "5");
+			if (i == 1)
+				filename = "../KellerGame/Config/DefaultEngine.ini";
+			else
+				filename = "../Engine/Config/BaseEngine.ini";
+		}
+	}
+}
+
+void IniConfig::SetWeapons(bool set) {
+	if (!set) {
+		CopyFile("../BackupConfig/DefaultWeaponsConfig.ini", "../KellerGame/Config/DefaultWeaponsConfig.ini", false);
+	}
+	else {
+		LPCSTR filename = "../KellerGame/Config/DefaultWeaponsConfig.ini";
+		LPCSTR key = "m_iDefaultAmmunitionRealistic";
+		LPCSTR value = "500";
+		LPCSTR section = "";
+
+		for (int i = 0; i < NUM(g_aWeaponList); ++i) {
+			std::string header = "R6Game." + g_aWeaponList[i];
+			section = header.c_str();
+			WriteINI(filename, section, key, value);
+		}
+	}
+}
+
+void IniConfig::SetGadgets(bool set) {
+	if (!set) {
+		CopyFile("../BackupConfig/DefaultGadgetsConfig.ini", "../KellerGame/Config/DefaultGadgetsConfig.ini", false);
+	}
+	else {
+		LPCSTR filename = "../KellerGame/Config/DefaultGadgetsConfig.ini";
+		LPCSTR a_section[8] = { "R6Game.R6GadgetGrenadeFlashbang","R6Game.R6GadgetGrenadeFrag",
+								"R6Game.R6GadgetGrenadeIncendiary","R6Game.R6GadgetGrenadeMolotov",
+								"R6Game.R6GadgetGrenadeSmoke", "R6Game.R6GadgetGrenadeTearGas",
+								"R6Game.R6GadgetExplosiveBreaching","R6Game.R6GadgetExplosiveDemolition"
+		};
+		LPCSTR key = "m_iMaxAmmoRealistic";
+		LPCSTR value = "9";
+
+		for (int i = 0; i < NUM(a_section); ++i) {
+			WriteINI(filename, a_section[i], key, value);
+		}
+	}
+}
+void IniConfig::SetGraphics(bool set) {
+	if (!set) {
+		CopyFile("../BackupConfig/BaseEngine.ini", "../Engine/Config/BaseEngine.ini", false);
+		CopyFile("../BackupConfig/PCKellerEngine.ini", "../KellerGame/Config/PCKellerEngine.ini", false);
+		CopyFile("../BackupConfig/DefaultEngine.ini", "../KellerGame/Config/DefaultEngine.ini", false);
+	}
+	else {
+		LPCSTR filename = "../KellerGame/Config/PCKellerEngine.ini";
+
+		for (int i = 0; i < 3; ++i) {
+
+			LPCSTR section = "Engine.Engine";
+			WriteINI(filename, section, "MinStreamedInMips", "768");
+			WriteINI(filename, section, "MaxStreamedInMips", "1120");
+
+			WriteINI(filename, section, "TerrainMaterialMaxTextureCount", "64");
+			WriteINI(filename, section, "TerrainTessellationCheckCount", "18");
+			WriteINI(filename, section, "TerrainTessellationCheckBorder", "2.0");
+			WriteINI(filename, section, "TerrainTessellationCheckDistance", "8192");
+			WriteINI(filename, section, "bUsePixelShaderComplexity", "True");
+
+			WriteINI(filename, section, "bUseAdditiveComplexity", "True");
+			WriteINI(filename, section, "MaxPixelShaderAdditiveComplexityCount", "1000");
+			WriteINI(filename, section, "MaxPixelShaderOpaqueComplexityCount", "400");
+			WriteINI(filename, section, "MaxVertexShaderComplexityCount", "400");
+			WriteINI(filename, section, "ShadowVolumeLightRadiusThreshold", "500");
+
+			WriteINI(filename, section, "ShadowVolumePrimitiveScreenSpacePercentageThreshold", "0.1");
+			WriteINI(filename, section, "bEnableVSMShadows", "True");
+			WriteINI(filename, section, "bEnableBranchingPCFShadows", "True");
+			WriteINI(filename, section, "ShadowFilterRadius", "1");
+			WriteINI(filename, section, "DepthBias", "0.008");
+			WriteINI(filename, section, "EnableHighPolyChars", "True");
+
+			section = "Engine.RenderDevice";
+			WriteINI(filename, section, "MeshLODRange", "4000");
+			WriteINI(filename, section, "UserMaxTextureSize", "8192");
+
+			section = "OpenGLDrv.OpenGLRenderDevice";
+			WriteINI(filename, section, "LevelOfAnisotropy", "16");
+			WriteINI(filename, section, "UseStaticLighting", "False");
+			WriteINI(filename, section, "ShadowBufferResolution", "8192");
+			WriteINI(filename, section, "MaxShadowResolution", "2040");
+			WriteINI(filename, section, "MinShadowResolution", "512");
+
+			WriteINI(filename, section, "MaxTranslucencyLayers", "4");
+			WriteINI(filename, section, "ShadowResolutionScale", "3.0");
+			WriteINI(filename, section, "BlurBufferResolutionDivisor", "2");
+			WriteINI(filename, section, "DisableMultiLightPath", "False");
+			WriteINI(filename, section, "bEnableFastShaderCaching", "True");
+			WriteINI(filename, section, "DisableOcclusion", "True");
+
+			section = "D3DDrv.D3DRenderDevice";
+			WriteINI(filename, section, "LevelOfAnisotropy", "16");
+			WriteINI(filename, section, "UseStaticLighting", "False");
+			WriteINI(filename, section, "ShadowBufferResolution", "8192");
+			WriteINI(filename, section, "MaxShadowResolution", "2040");
+			WriteINI(filename, section, "MinShadowResolution", "512");
+
+			WriteINI(filename, section, "DisableShaderModel3", "False");
+			WriteINI(filename, section, "DisableMultiLightPath", "False");
+			WriteINI(filename, section, "bEnableFastShaderCaching", "True");
+			WriteINI(filename, section, "MaxTranslucencyLayers", "4");
+
+			if (i == 1)
+				filename = "../KellerGame/Config/DefaultEngine.ini";
+			else
+				filename = "../Engine/Config/BaseEngine.ini";
+		}
+	}
+}
 void IniConfig::SetTimeLimit(int time) {
 	std::string time_limt = std::to_string(time);
 
@@ -144,4 +259,10 @@ bool IniConfig::WriteINI(LPCSTR file, LPCSTR section, LPCSTR key, LPCSTR value) 
 	}
 }
 
-void IniConfig::SavePreferences() {}
+void IniConfig::SavePreferences() {
+
+	LPCSTR filename = "../Backup/ModPreferences.ini";
+	LPCSTR section = "Preferences";
+
+	WriteINI(filename, section, "m_iLimitRespawns", "0");
+}

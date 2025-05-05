@@ -15,11 +15,13 @@ public:
 	~IniConfig();
 	void SavePreferences();
 	bool WriteINI(LPCSTR file, LPCSTR section, LPCSTR key, LPCSTR value);
+	void RestoreBackup();
 
-	void SetInternet();
-	void SetSound();
-	void SetWeapons();
-	void SetGadgets();
+	void SetInternet(bool set);
+	void SetSound(bool set);
+	void SetWeapons(bool set);
+	void SetGadgets(bool set);
+	void SetGraphics(bool set);
 
 	void SetMap(int map);
 	void SetRespawn(bool on, int count);
@@ -46,11 +48,19 @@ public:
 "MB14_Convent_MLG"
 	};
 
-	const std::string g_aWeaponList[20] = {
+	const std::string g_aWeaponList[37] = {
 		"ConfigR6SubMP5N", "ConfigR6SubMP7A1", "ConfigR6SubUMP45", "ConfigR6SubP90",
-		"ConfigR6SubMP9","ConfigR6SubMAC11","ConfigR6SubVZ83","ConfigR6SubType05JS","[R6Game.ConfigR6SubAUGPara]",
+		"ConfigR6SubMP9","ConfigR6SubMAC11","ConfigR6SubVZ83","ConfigR6SubType05JS","ConfigR6SubAUGPara", //9
 		
 		"ConfigR6AssaultSCARHCQC","ConfigR6AssaultM8","ConfigR6AssaultAUGA3","ConfigR6AssaultG3KA4","ConfigR6Assault552Commando",
-		"ConfigR6AssaultG36C","ConfigR6AssaultMTAR21","ConfigR6AssaultFamas","ConfigR6AssaultAK47","ConfigR6AssaultM468"
+		"ConfigR6AssaultG36C","ConfigR6AssaultMTAR21","ConfigR6AssaultFamas","ConfigR6AssaultAK47","ConfigR6AssaultM468",
+		"ConfigR6AssaultFNC","ConfigR6AssaultL85A2","ConfigR6AssaultAKS74U", //13
+		
+		"ConfigR6LMGMK46","ConfigR6LMG21E","ConfigR6LMGM249SPW","ConfigR6LMGMG36", //4
+		
+		"ConfigR6ShotgunM3","ConfigR6ShotgunSpas12","ConfigR6Shotgun870MCS","ConfigR6ShotgunXM26LSS","ConfigR6Shotgun500Tactical" //5
+
+		"ConfigR6SniperPSG1","ConfigR6SniperM40A1","ConfigR6SniperSV98","ConfigR6SniperScoutTactical","ConfigR6SniperSR25SD", //6
+		"ConfigR6SniperL96ArticWarfare"
 	};
 };

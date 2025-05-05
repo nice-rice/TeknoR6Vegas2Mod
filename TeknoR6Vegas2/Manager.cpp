@@ -45,11 +45,27 @@ void ModManager::Init() {
 void ModManager::StartProcess(bool start) {
 	m_bStartProcess = start;
 
-	m_pIniConfig->SetGadgets();
-	m_pIniConfig->SetInternet();
-	m_pIniConfig->SetWeapons();
-	m_pIniConfig->SetSound();
 
+}
+void ModManager::SetOtherMods(bool internet, bool sound, bool graphics, bool ammo, bool gadgets) {
+	m_pIniConfig->SetGadgets(gadgets);
+	m_pIniConfig->SetWeapons(ammo);
+	
+	//Ordering is currently important, otherwise they overwrite each other
+	//If grapgics is set off, do the back up restore first
+	if (!graphics) 
+		m_pIniConfig->SetGraphics(graphics);
+	if (!internet) {
+		m_pIniConfig->SetInternet(internet);
+		m_pIniConfig->SetSound(sound);
+	}
+	else {
+		m_pIniConfig->SetSound(sound);
+		m_pIniConfig->SetInternet(internet);
+	}
+	//Check again if graphics is on and skipped earlier
+	if(graphics)
+		m_pIniConfig->SetGraphics(graphics);
 }
 bool ModManager::LoadProcess(LPCSTR Filename){
 	if (!m_bIsHost) {
@@ -72,7 +88,6 @@ bool ModManager::LoadProcess(LPCSTR Filename){
 	
 	}
 	// Mutable string required by CreateProcess
-	std::string mode = "CoopTerroristHunt";
 	std::string commandLine = "../Binaries/RainbowSixVegas2_SADS.exe engine.servercommandlet " +
 		m_sCurrentMap + "?AgO=0?AgU=" +
 		m_sServerName + "?AgP=?SrvOptionFile=R6VegasServerConfig?PW=" +

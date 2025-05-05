@@ -21,6 +21,7 @@ public:
 	int RunTo(DWORD Address, DWORD Mode, DWORD Eip);
 	static ModManager& GetInstance();
 
+	void SetOtherMods(bool internet, bool sound, bool graphics, bool ammo, bool gadgets);
 	void StartProcess(bool start);
 	void ModifyMemory();
 

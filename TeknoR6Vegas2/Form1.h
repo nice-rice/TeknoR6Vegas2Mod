@@ -94,9 +94,12 @@ namespace TeknoR6Vegas2 {
 	private: System::Windows::Forms::CheckBox^ ReadyUpCheck;
 	private: System::Windows::Forms::CheckBox^ SoundPatchBox;
 	private: System::Windows::Forms::CheckBox^ InternetBox;
-	private: System::Windows::Forms::CheckBox^ GraphicsMod;
+	private: System::Windows::Forms::CheckBox^ GraphicsBox;
+
 	private: System::Windows::Forms::ComboBox^ GameModeBox;
 	private: System::Windows::Forms::Label^ GameModeLabel;
+	private: System::Windows::Forms::CheckBox^ GadgetsCheckbox;
+	private: System::Windows::Forms::CheckBox^ AmmoCheckbox;
 
 
 
@@ -145,7 +148,9 @@ void InitializeComponent(void){
 	this->ReadyUpCheck = (gcnew System::Windows::Forms::CheckBox());
 	this->SelectMapLabel = (gcnew System::Windows::Forms::Label());
 	this->OtherModsGroup = (gcnew System::Windows::Forms::GroupBox());
-	this->GraphicsMod = (gcnew System::Windows::Forms::CheckBox());
+	this->GadgetsCheckbox = (gcnew System::Windows::Forms::CheckBox());
+	this->AmmoCheckbox = (gcnew System::Windows::Forms::CheckBox());
+	this->GraphicsBox = (gcnew System::Windows::Forms::CheckBox());
 	this->SoundPatchBox = (gcnew System::Windows::Forms::CheckBox());
 	this->InternetBox = (gcnew System::Windows::Forms::CheckBox());
 	this->TerrorHuntGroup = (gcnew System::Windows::Forms::GroupBox());
@@ -214,7 +219,7 @@ void InitializeComponent(void){
 	this->HostOptions->Controls->Add(this->RespawnDrop);
 	this->HostOptions->Controls->Add(this->RespawnCountLabel);
 	this->HostOptions->Controls->Add(this->IsHostBox);
-	this->HostOptions->Location = System::Drawing::Point(63, 146);
+	this->HostOptions->Location = System::Drawing::Point(63, 69);
 	this->HostOptions->Name = L"HostOptions";
 	this->HostOptions->Size = System::Drawing::Size(264, 293);
 	this->HostOptions->TabIndex = 7;
@@ -451,30 +456,59 @@ void InitializeComponent(void){
 	// 
 	// OtherModsGroup
 	// 
-	this->OtherModsGroup->Controls->Add(this->GraphicsMod);
+	this->OtherModsGroup->Controls->Add(this->GadgetsCheckbox);
+	this->OtherModsGroup->Controls->Add(this->AmmoCheckbox);
+	this->OtherModsGroup->Controls->Add(this->GraphicsBox);
 	this->OtherModsGroup->Controls->Add(this->SoundPatchBox);
 	this->OtherModsGroup->Controls->Add(this->InternetBox);
-	this->OtherModsGroup->Enabled = false;
-	this->OtherModsGroup->Location = System::Drawing::Point(63, 461);
+	this->OtherModsGroup->Location = System::Drawing::Point(63, 400);
 	this->OtherModsGroup->Name = L"OtherModsGroup";
-	this->OtherModsGroup->Size = System::Drawing::Size(264, 94);
+	this->OtherModsGroup->Size = System::Drawing::Size(264, 155);
 	this->OtherModsGroup->TabIndex = 13;
 	this->OtherModsGroup->TabStop = false;
 	this->OtherModsGroup->Text = L"Other Mods";
 	// 
-	// GraphicsMod
+	// GadgetsCheckbox
 	// 
-	this->GraphicsMod->AutoSize = true;
-	this->GraphicsMod->Location = System::Drawing::Point(9, 67);
-	this->GraphicsMod->Name = L"GraphicsMod";
-	this->GraphicsMod->Size = System::Drawing::Size(115, 17);
-	this->GraphicsMod->TabIndex = 2;
-	this->GraphicsMod->Text = L"Improved Graphics";
-	this->GraphicsMod->UseVisualStyleBackColor = true;
+	this->GadgetsCheckbox->AutoSize = true;
+	this->GadgetsCheckbox->Checked = true;
+	this->GadgetsCheckbox->CheckState = System::Windows::Forms::CheckState::Checked;
+	this->GadgetsCheckbox->Location = System::Drawing::Point(9, 115);
+	this->GadgetsCheckbox->Name = L"GadgetsCheckbox";
+	this->GadgetsCheckbox->Size = System::Drawing::Size(93, 17);
+	this->GadgetsCheckbox->TabIndex = 4;
+	this->GadgetsCheckbox->Text = L"Extra Gadgets";
+	this->GadgetsCheckbox->UseVisualStyleBackColor = true;
+	// 
+	// AmmoCheckbox
+	// 
+	this->AmmoCheckbox->AutoSize = true;
+	this->AmmoCheckbox->Checked = true;
+	this->AmmoCheckbox->CheckState = System::Windows::Forms::CheckState::Checked;
+	this->AmmoCheckbox->Location = System::Drawing::Point(9, 90);
+	this->AmmoCheckbox->Name = L"AmmoCheckbox";
+	this->AmmoCheckbox->Size = System::Drawing::Size(82, 17);
+	this->AmmoCheckbox->TabIndex = 3;
+	this->AmmoCheckbox->Text = L"Extra Ammo";
+	this->AmmoCheckbox->UseVisualStyleBackColor = true;
+	// 
+	// GraphicsBox
+	// 
+	this->GraphicsBox->AutoSize = true;
+	this->GraphicsBox->Checked = true;
+	this->GraphicsBox->CheckState = System::Windows::Forms::CheckState::Checked;
+	this->GraphicsBox->Location = System::Drawing::Point(9, 67);
+	this->GraphicsBox->Name = L"GraphicsBox";
+	this->GraphicsBox->Size = System::Drawing::Size(115, 17);
+	this->GraphicsBox->TabIndex = 2;
+	this->GraphicsBox->Text = L"Improved Graphics";
+	this->GraphicsBox->UseVisualStyleBackColor = true;
 	// 
 	// SoundPatchBox
 	// 
 	this->SoundPatchBox->AutoSize = true;
+	this->SoundPatchBox->Checked = true;
+	this->SoundPatchBox->CheckState = System::Windows::Forms::CheckState::Checked;
 	this->SoundPatchBox->Location = System::Drawing::Point(9, 43);
 	this->SoundPatchBox->Name = L"SoundPatchBox";
 	this->SoundPatchBox->Size = System::Drawing::Size(92, 17);
@@ -485,6 +519,8 @@ void InitializeComponent(void){
 	// InternetBox
 	// 
 	this->InternetBox->AutoSize = true;
+	this->InternetBox->Checked = true;
+	this->InternetBox->CheckState = System::Windows::Forms::CheckState::Checked;
 	this->InternetBox->Location = System::Drawing::Point(9, 20);
 	this->InternetBox->Name = L"InternetBox";
 	this->InternetBox->Size = System::Drawing::Size(85, 17);
@@ -603,7 +639,16 @@ void InitializeComponent(void){
 	private: System::Void IsHostBox_CheckedChanged(System::Object^  sender, System::EventArgs^  e){
 
 		m_pManager->SetServer(IsHostBox->Checked, ServerNameBox->Text,PasswordBox->Text);
+		
+		ServerNameBox->Enabled = !ServerNameBox->Enabled;
+		PasswordBox->Enabled = !PasswordBox->Enabled;
+		GameModeBox->Enabled = !GameModeBox->Enabled;
+		TimeLimitDrop->Enabled = !TimeLimitDrop->Enabled;
+		ReadyUpCheck->Enabled = !ReadyUpCheck->Enabled;
+		MapListDrop->Enabled = !MapListDrop->Enabled;
+		DifficultyDrop->Enabled = !DifficultyDrop->Enabled;
 
+		
 	}
 	private: System::Void LaunchButton_Click(System::Object^  sender, System::EventArgs^  e){
 		
@@ -623,16 +668,12 @@ void InitializeComponent(void){
 		System::String^ launch_time_t = gcnew String(asctime(localtime(&timetoday)));
 		WriteLog("Time Started: "+ launch_time_t);
 		
+		//Enable or disable mods that write to ini files
+		m_pManager->SetOtherMods(InternetBox->Checked, SoundPatchBox->Checked, GraphicsBox->Checked, AmmoCheckbox->Checked, GadgetsCheckbox->Checked);
+		
 		//Begin launching the game
 		m_pManager->StartProcess(true);
 		
-		//Set the drop down to the next map?
-		//static int i = 0;
-		//++i;
-		//if (i > 16) {
-		//	i = 0;
-		//}
-		//MapListDrop->SelectedIndex = i;
 	}
 
 	private: System::Void ApplyButton_Click(System::Object^ sender, System::EventArgs^ e) {
