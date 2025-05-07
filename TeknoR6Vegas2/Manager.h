@@ -26,6 +26,7 @@ public:
 	void ModifyMemory();
 
 	std::string GetMapName(int index);
+	void SetPreferences(int index, int value);
 
 	void SetGameMode(System::String^ mode);
 	void SetServer(bool s, System::String^ name, System::String^ pwd);

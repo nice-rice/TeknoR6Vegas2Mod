@@ -248,6 +248,11 @@ void IniConfig::SetRespawn(bool on, int count) {
 		WriteINI(filename, section, "m_bRespawn", "True");
 	else
 		WriteINI(filename, section, "m_bRespawn", "False");
+
+	filename = "../KellerGame/Config/DefaultServerOptions.ini";
+	WriteINI(filename, section, "m_iLimitRespawns", respawn.c_str());
+	WriteINI(filename, section, "m_bRespawn", "True");
+
 }
 bool IniConfig::WriteINI(LPCSTR file, LPCSTR section, LPCSTR key, LPCSTR value) {
 
@@ -258,11 +263,22 @@ bool IniConfig::WriteINI(LPCSTR file, LPCSTR section, LPCSTR key, LPCSTR value) 
 		return false;
 	}
 }
+void IniConfig::SetServer(std::string name, std::string pass) {
+	LPCSTR filename = "../BackupConfig/ModPreferences.ini";
+	LPCSTR section = "Preferences";
+	WriteINI(filename, section, "ServerName", name.c_str());
+	WriteINI(filename, section, "ServerPassword", pass.c_str());
 
-void IniConfig::SavePreferences() {
+}
+void IniConfig::SavePreferences(int index, int value) {
 
-	LPCSTR filename = "../Backup/ModPreferences.ini";
+	LPCSTR filename = "../BackupConfig/ModPreferences.ini";
 	LPCSTR section = "Preferences";
 
-	WriteINI(filename, section, "m_iLimitRespawns", "0");
+	static const std::string m_aPreferences[15] = { "IsServer","GameMode","Respawns","TimeLimit",
+		"ReadyUpReq","MapIndex","MaxPlayers","SpawnRate","TerroristCount","Difficulty",
+		"SetAmmo","SetGadgets", "SetInternet","SetSound","SetGraphics"
+	};
+	WriteINI(filename, section, m_aPreferences[index].c_str(), std::to_string(value).c_str());
+
 }

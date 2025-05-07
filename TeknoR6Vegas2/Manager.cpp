@@ -23,7 +23,9 @@ ModManager::ModManager() {
 
 }
 
-ModManager::~ModManager() {}
+ModManager::~ModManager() {
+	delete m_pIniConfig;
+}
 ModManager& ModManager::GetInstance() {
 	static ModManager instance;
 	return instance;
@@ -271,6 +273,7 @@ void ModManager::SetServer(bool s, System::String^ name, System::String^ pwd) {
 	msclr::interop::marshal_context context;
 	m_sServerName = context.marshal_as<std::string>(name);
 	m_sServerPassword = context.marshal_as<std::string>(pwd);
+	m_pIniConfig->SetServer(m_sServerName, m_sServerPassword);
 }
 void ModManager::SetRespawn(System::String^ val) {
 	bool respawn_on = true;
@@ -341,4 +344,7 @@ void ModManager::SetReadyUp(bool val) {
 	}
 	else
 		m_iTimeBetween = 60;
+}
+void ModManager::SetPreferences(int index, int value) {
+	m_pIniConfig->SavePreferences(index, value);
 }

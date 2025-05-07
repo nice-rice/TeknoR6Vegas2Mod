@@ -13,10 +13,12 @@ class IniConfig {
 public:
 	IniConfig();
 	~IniConfig();
-	void SavePreferences();
+	
 	bool WriteINI(LPCSTR file, LPCSTR section, LPCSTR key, LPCSTR value);
 	void RestoreBackup();
-
+	
+	void SavePreferences(int index, int value);
+	void SetServer(std::string name, std::string key);
 	void SetInternet(bool set);
 	void SetSound(bool set);
 	void SetWeapons(bool set);

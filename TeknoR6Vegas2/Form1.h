@@ -100,6 +100,8 @@ namespace TeknoR6Vegas2 {
 	private: System::Windows::Forms::Label^ GameModeLabel;
 	private: System::Windows::Forms::CheckBox^ GadgetsCheckbox;
 	private: System::Windows::Forms::CheckBox^ AmmoCheckbox;
+	private: System::Windows::Forms::LinkLabel^ githubLabel;
+
 
 
 
@@ -157,6 +159,7 @@ void InitializeComponent(void){
 	this->TerrorCountDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->SpawnRateDrop = (gcnew System::Windows::Forms::ComboBox());
 	this->SpawnRateLabel = (gcnew System::Windows::Forms::Label());
+	this->githubLabel = (gcnew System::Windows::Forms::LinkLabel());
 	(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TitlePictureBox))->BeginInit();
 	this->HostOptions->SuspendLayout();
 	this->LaunchBoxGroup->SuspendLayout();
@@ -385,7 +388,7 @@ void InitializeComponent(void){
 	this->LaunchBoxGroup->Controls->Add(this->LaunchButton);
 	this->LaunchBoxGroup->Controls->Add(this->GameRunningLabel);
 	this->LaunchBoxGroup->Controls->Add(this->LogTextBox);
-	this->LaunchBoxGroup->Location = System::Drawing::Point(388, 285);
+	this->LaunchBoxGroup->Location = System::Drawing::Point(389, 262);
 	this->LaunchBoxGroup->Name = L"LaunchBoxGroup";
 	this->LaunchBoxGroup->Size = System::Drawing::Size(264, 270);
 	this->LaunchBoxGroup->TabIndex = 11;
@@ -571,12 +574,26 @@ void InitializeComponent(void){
 	this->SpawnRateLabel->TabIndex = 2;
 	this->SpawnRateLabel->Text = L"Spawn Rate";
 	// 
+	// githubLabel
+	// 
+	this->githubLabel->AutoSize = true;
+	this->githubLabel->BackColor = System::Drawing::Color::Transparent;
+	this->githubLabel->LinkColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+		static_cast<System::Int32>(static_cast<System::Byte>(224)));
+	this->githubLabel->Location = System::Drawing::Point(369, 555);
+	this->githubLabel->Name = L"githubLabel";
+	this->githubLabel->Size = System::Drawing::Size(304, 13);
+	this->githubLabel->TabIndex = 18;
+	this->githubLabel->TabStop = true;
+	this->githubLabel->Text = L"https://github.com/nice-rice/Rainbow-Six-Vegas-2-Server-Mod";
+	// 
 	// Form1
 	// 
 	this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 	this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 	this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 	this->ClientSize = System::Drawing::Size(1023, 577);
+	this->Controls->Add(this->githubLabel);
 	this->Controls->Add(this->TerrorHuntGroup);
 	this->Controls->Add(this->OtherModsGroup);
 	this->Controls->Add(this->OtherOptionsGroup);
@@ -600,6 +617,7 @@ void InitializeComponent(void){
 	this->TerrorHuntGroup->ResumeLayout(false);
 	this->TerrorHuntGroup->PerformLayout();
 	this->ResumeLayout(false);
+	this->PerformLayout();
 
 }
 #pragma endregion
@@ -619,15 +637,36 @@ void InitializeComponent(void){
 				}
 				MapListDrop->Items->AddRange(mapList);
 				
+				LPCSTR filename = "../BackupConfig/ModPreferences.ini";
+				LPCSTR section = "Preferences";
+				char value[4096];
+				GetPrivateProfileString(section, "ServerName", NULL, value, sizeof(value), filename);
+				System::Object^ so_name = gcnew System::Object;
+				so_name = gcnew String(value);
+				ServerNameBox->Text = so_name+"";
+				
+				GetPrivateProfileString(section, "ServerPassword", NULL, value, sizeof(value), filename);
+				so_name = gcnew String(value);
+				PasswordBox->Text = so_name + "";
+				
 				//Set Default Values on startup
-				 MaxPlayersDrop->SelectedIndex = 15;
-				 TerrorCountDrop->SelectedIndex = 2;
-				 MapListDrop->SelectedIndex = 0;
-				 SpawnRateDrop->SelectedIndex = 2;
-				 DifficultyDrop->SelectedIndex = 2;
-				 TimeLimitDrop->SelectedIndex = 4;
-				 RespawnDrop->SelectedIndex = 4;
-				 GameModeBox->SelectedIndex = 0;
+			
+				IsHostBox->Checked = GetPrivateProfileInt(section, "IsServer", NULL, filename);
+				 ReadyUpCheck->Checked = GetPrivateProfileInt(section, "ReadyUpReq", NULL, filename);
+				 AmmoCheckbox->Checked = GetPrivateProfileInt(section, "SetAmmo", NULL, filename);
+				 GadgetsCheckbox->Checked = GetPrivateProfileInt(section, "SetGadgets", NULL, filename);
+				 InternetBox->Checked = GetPrivateProfileInt(section, "SetInternet", NULL, filename);
+				 SoundPatchBox->Checked = GetPrivateProfileInt(section, "SetSound", NULL, filename);
+				 GraphicsBox->Checked = GetPrivateProfileInt(section, "SetGraphics", NULL, filename);
+				 
+				 MaxPlayersDrop->SelectedIndex = GetPrivateProfileInt(section, "MaxPlayers", NULL, filename);
+				 TerrorCountDrop->SelectedIndex = GetPrivateProfileInt(section, "TerroristCount", NULL, filename);
+				 MapListDrop->SelectedIndex = GetPrivateProfileInt(section, "MapIndex", NULL, filename);
+				 SpawnRateDrop->SelectedIndex = GetPrivateProfileInt(section, "SpawnRate", NULL, filename);
+				 DifficultyDrop->SelectedIndex = GetPrivateProfileInt(section, "Difficulty", NULL, filename);
+				 TimeLimitDrop->SelectedIndex = GetPrivateProfileInt(section, "TimeLimit", NULL, filename);
+				 RespawnDrop->SelectedIndex = GetPrivateProfileInt(section, "Respawns", NULL, filename);
+				 GameModeBox->SelectedIndex = GetPrivateProfileInt(section, "GameMode", NULL, filename);
 
 	}
 	private: void WriteLog(String^ Writto){
@@ -685,16 +724,41 @@ void InitializeComponent(void){
 		if (ServerNameBox->Text == "") {
 			ServerNameBox->Text = "T-Hunt-Server";
 		}
-		m_pManager->SetGameMode(GameModeBox->Text);
 		m_pManager->SetServer(IsHostBox->Checked, ServerNameBox->Text, PasswordBox->Text);
-		m_pManager->SetMap(MapListDrop->SelectedIndex);
+		m_pManager->SetPreferences(0, IsHostBox->Checked);
+		
+		m_pManager->SetGameMode(GameModeBox->Text);
+		m_pManager->SetPreferences(1, GameModeBox->SelectedIndex);
+
 		m_pManager->SetRespawn(RespawnDrop->Text);
-		m_pManager->SetDifficulty(DifficultyDrop->Text);
+		m_pManager->SetPreferences(2, RespawnDrop->SelectedIndex);
+		
 		m_pManager->SetTimeLimit(Convert::ToInt32(TimeLimitDrop->SelectedItem));
-		m_pManager->SetMaxPlayers(Convert::ToInt32(MaxPlayersDrop->SelectedItem));
+		m_pManager->SetPreferences(3, TimeLimitDrop->SelectedIndex);
+
 		m_pManager->SetReadyUp(ReadyUpCheck->Checked);
+		m_pManager->SetPreferences(4, ReadyUpCheck->Checked);
+
+		m_pManager->SetMap(MapListDrop->SelectedIndex);
+		m_pManager->SetPreferences(5, MapListDrop->SelectedIndex);
+
+		m_pManager->SetMaxPlayers(Convert::ToInt32(MaxPlayersDrop->SelectedItem));
+		m_pManager->SetPreferences(6, MaxPlayersDrop->SelectedIndex);
+
 		m_pManager->SetSpawnRate(SpawnRateDrop->SelectedItem);
+		m_pManager->SetPreferences(7, SpawnRateDrop->SelectedIndex);
+		
 		m_pManager->SetTerrorCount(TerrorCountDrop->SelectedItem);
+		m_pManager->SetPreferences(8, TerrorCountDrop->SelectedIndex);
+
+		m_pManager->SetDifficulty(DifficultyDrop->Text);
+		m_pManager->SetPreferences(9, DifficultyDrop->SelectedIndex);
+
+		m_pManager->SetPreferences(10, AmmoCheckbox->Checked);
+		m_pManager->SetPreferences(11, GadgetsCheckbox->Checked);
+		m_pManager->SetPreferences(12, InternetBox->Checked);
+		m_pManager->SetPreferences(13, SoundPatchBox->Checked);
+		m_pManager->SetPreferences(14, GraphicsBox->Checked);
 		
 	}
 
