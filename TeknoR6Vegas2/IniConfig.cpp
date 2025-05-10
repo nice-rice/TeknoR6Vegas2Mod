@@ -229,7 +229,8 @@ void IniConfig::SetMap(int map) {
 	LPCSTR section = "Engine.R6ServerOptions";
 	LPCSTR value = map_code.c_str();
 
-	for (int i = 0; i < NUM(g_aMapList); ++i) {
+	//Default R6VegasServerConfig has 20 items and 17 maps
+	for (int i = 0; i < NUM(g_aMapList)+3; ++i) {
 		std::string key_index = "m_iSelectedMaps[" + std::to_string(i) + "]";
 		LPCSTR key = key_index.c_str();
 		WriteINI(filename, section, key, value);
